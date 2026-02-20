@@ -8,99 +8,99 @@
 <h1 align="center">🤖 LightweightClaw</h1>
 
 <p align="center">
-  <b>Ультра-легковесный автономный ИИ-агент.</b> Вдохновлен архитектурами <i>OpenClaw</i> и <i>Nanobot</i>, но переписан для максимальной простоты, скорости и полной конфиденциальности. Выполняет команды на вашем ПК, запоминает контекст и торгует криптовалютами.
+  <b>Ultra-lightweight autonomous AI agent.</b> Inspired by <i>OpenClaw</i> and <i>Nanobot</i> architectures, but rewritten for maximum simplicity, speed, and complete privacy. Executes commands on your PC and remembers context using a 3-layer memory system.
 </p>
 
 ---
 
-## ⚡ Особенности
+## ⚡ Features
 
-- 🧠 **Трехуровневая архитектура памяти**:
-  - *Short-term* (Оперативная, последние 50 сообщений, автоквантизация).
-  - *Mid-term* (Файловая память дня, записывается в логи).
-  - *Long-term* (Система суммаризации контекста, аналог PiecesOS).
-- 🎭 **Интегрированные Персоны**:
-  - **J.A.R.V.I.S.** — строгий, британский ИИ для системных задач и кода.
-  - **Mira** — сообразительная, живая помощница для трендов и криптовалют.
-- 🗣️ **Голосовой движок (Локальный)**: 
-  - Text-to-Speech (TTS) через **Piper**.
-  - Speech-to-Text (STT) через **OpenAI Whisper**.
-- 🛠️ **Инструментарий (Рабочий, без мокапов)**:
-  - Парсер рыночных данных CoinGecko.
-  - Автономный веб-поиск (парсинг DuckDuckGo без API ключей).
-  - Монитор системы хоста (ОЗУ, CPU).
-  - Заготовка Memecoin Sniper (интеграция DexScreener).
+- 🧠 **Three-Layer Memory Architecture**:
+  - *Short-term* (Working memory, last 50 messages, auto-quantization).
+  - *Mid-term* (Daily file-based memory, logged to disk).
+  - *Long-term* (Context summarization system, similar to PiecesOS).
+- 🎭 **Integrated Personas**:
+  - **J.A.R.V.I.S.** — Strict, British AI for system tasks and code.
+  - **Mira** — Quick-witted, lively assistant for trends and web searches.
+- 🗣️ **Voice Engine (Local)**: 
+  - Text-to-Speech (TTS) via **Piper**.
+  - Speech-to-Text (STT) via **OpenAI Whisper**.
+- 🛠️ **Real Tool Integrations**:
+  - CoinGecko Market Data Parser.
+  - Autonomous Web Search (DuckDuckGo parsing without API keys).
+  - Host System Monitor (RAM, CPU, Disk).
 
----
-
-## 🛑 ВАЖНО: Безопасность и Секреты (READ THIS FIRST)
-
-Проект создан для **локального использования**. Все приватные ключи, токены ботов и доступы к API **ДОЛЖНЫ ХРАНИТЬСЯ ТОЛЬКО В ФАЙЛЕ `.env`**.
-
-1. **Telegram Token:** Берется у `@BotFather`. Вставлять только в локальный `.env`.
-2. **Приватные ключи кошельков (для Снайпера):** Если вы снимаете режим `dry_run` в `config/tools.yaml` для реальной торговли, ключи прописываются в `.env` (см. файл `.env.example`).
-3. **НИКОГДА НЕ ПУШЬТЕ `.env` В GITHUB!** В репозитории добавлен файл `.gitignore`, следите, чтобы он не был удален.
+*(Note: Memecoin Sniper module has been moved to a separate repository for security and modularity reasons).*
 
 ---
 
-## 🚀 Установка за 1 минуту (Linux / ZorinOS / Mac)
+## 🛑 IMPORTANT: Security and Secrets (READ THIS FIRST)
+
+This project is built for **local use**. All private keys, bot tokens, and API access MUST be stored ONLY in the `.env` file.
+
+1. **Telegram Token:** Get it from `@BotFather`. Paste it only in your local `.env`.
+2. **NEVER PUSH `.env` TO GITHUB!** A `.gitignore` file is included in the repository; make sure it is not deleted.
+
+---
+
+## 🚀 1-Minute Installation (Linux / ZorinOS / Mac)
 
 ```bash
-# 1. Клонируем репозиторий
+# 1. Clone the repository
 git clone https://github.com/MrFreemanO/LightweightClaw.git
 cd LightweightClaw
 
-# 2. Создаем файл секретов из шаблона! (СЮДА ВСТАВЛЯТЬ ТОКЕНЫ)
+# 2. Create the secrets file from the template (PASTE TOKENS HERE)
 cp .env.example .env
 nano .env
 
-# 3. Устанавливаем зависимости и запускаем
+# 3. Install dependencies and run
 bash scripts/deploy_all.sh
 ```
 
-### Запуск (после установки):
+### Running the Agent:
 ```bash
 source .venv/bin/activate
 python main.py
 ```
-Откройте браузер по адресу: **http://localhost:8000**
+Open your browser at: **http://localhost:8000**
 
 ---
 
-## ⚙️ Интеграция с локальными моделями (Jan AI)
+## ⚙️ Integration with Local Models (Jan AI)
 
-По умолчанию проект настроен на работу с **Jan AI** (OpenAI-совместимое локальное API).
-1. Откройте Jan.
-2. Скачайте любую GGUF модель (например, Llama 3 8B, Mistral, Qwen).
-3. Перейдите в настройки Jan и включите **Local API Server** (обычно висит на `http://127.0.0.1:1337`).
-4. LightweightClaw автоматически подключится к нему.
+By default, the project is configured to work with **Jan AI** (an OpenAI-compatible local API).
+1. Open Jan.
+2. Download any GGUF model (e.g., Llama 3 8B, Mistral, Qwen).
+3. Go to Jan settings and enable the **Local API Server** (usually runs on `http://127.0.0.1:1337`).
+4. LightweightClaw will connect to it automatically.
 
 ---
 
-## 📂 Структура проекта
+## 📂 Project Structure
 
 ```text
 lightweightclaw/
 ├── core/
-│   ├── agent.py        # Основная логика, парсинг инструментов
-│   ├── memory.py       # 3-х уровневая память и квантизация
-│   ├── tools.py        # РЕАЛЬНЫЕ функции: поиск, крипта, снайпер
-│   └── security.py     # Изоляция задач (лимиты, таймауты)
+│   ├── agent.py        # Core logic, LLM interaction, tool parsing
+│   ├── memory.py       # 3-layer memory & quantization
+│   ├── tools.py        # REAL functions: search, crypto, sys_info
+│   └── security.py     # Task isolation (limits, timeouts)
 ├── channels/
-│   ├── web_ui.py       # FastAPI WebSocket сервер
-│   └── telegram_bot.py # Интеграция с Telegram
+│   ├── web_ui.py       # FastAPI WebSocket server
+│   └── telegram_bot.py # Telegram integration
 ├── voice/
-│   ├── stt.py          # Интеграция Whisper 
-│   └── tts.py          # Интеграция Piper
+│   ├── stt.py          # Whisper integration 
+│   └── tts.py          # Piper integration
 ├── config/
-│   ├── config.yaml     # Настройки лимитов и роутера
-│   ├── personas.yaml   # Промпты для Jarvis и Mira
-│   └── tools.yaml      # Управление доступом к инструментам
-├── memory/             # Папка локальной базы знаний (создается при запуске)
-└── main.py             # Точка входа в программу
+│   ├── config.yaml     # Main settings & router logic
+│   ├── personas.yaml   # Prompts for Jarvis and Mira
+│   └── tools.yaml      # Tool access management
+├── memory/             # Local knowledge base (created on run)
+└── main.py             # Entry point
 ```
 
 ---
 
-## 🛡️ Дисклеймер
-*Инструмент `memecoin_sniper` по умолчанию работает в безопасном режиме (dry-run) и собирает открытые данные с DEX. Автоматическая торговля криптовалютами несет высокие риски потери средств. Автор проекта не несет ответственности за любые финансовые операции, совершенные данным ИИ-агентом.*
+## 🛡️ Disclaimer
+*This project is provided as-is for educational and personal automation purposes. The author is not responsible for any actions executed by the autonomous agent on your local machine.*

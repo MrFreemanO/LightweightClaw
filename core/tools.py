@@ -8,44 +8,19 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 async def crypto_price(symbol="BTC", **kwargs):
-    """Получение реальной цены криптовалюты через CoinGecko (Free API)"""
+    """Get real cryptocurrency price via CoinGecko (Free API)"""
     try:
         async with aiohttp.ClientSession() as s:
             url = f"https://api.coingecko.com/api/v3/simple/price?ids={symbol.lower()}&vs_currencies=usd"
             async with s.get(url) as r:
                 data = await r.json()
                 price = data.get(symbol.lower(), {}).get("usd")
-                return price if price else f"Не удалось найти монету {symbol}"
+                return price if price else f"Could not find coin {symbol}"
     except Exception as e:
-        return f"Ошибка API CoinGecko: {e}"
-
-async def memecoin_sniper(target_platform="pump.fun", dry_run=True, **kwargs):
-    """
-    Поиск новых мемкоинов (Интеграция с DexScreener API для Solana).
-    ⚠️ ВНИМАНИЕ: ДЛЯ РЕАЛЬНОЙ ТОРГОВЛИ НЕОБХОДИМ ПРИВАТНЫЙ КЛЮЧ КОШЕЛЬКА!
-    ВСТАВЛЯЙТЕ ЕГО ТОЛЬКО В LOKAL .env ФАЙЛ, НИКОГДА НЕ ПУШЬТЕ В GITHUB!
-    """
-    logger.info(f"Снайпер запущен: {target_platform} (Dry Run: {dry_run})")
-    
-    # ПРИМЕР РЕАЛЬНОГО ЗАПРОСА К ПУБЛИЧНОМУ API
-    try:
-        async with aiohttp.ClientSession() as s:
-            # Ищем свежие пары на Solana
-            async with s.get("https://api.dexscreener.com/latest/dex/search?q=solana") as r:
-                data = await r.json()
-                pairs = data.get("pairs", [])[:3]  # Берем топ-3 свежих
-                targets = [f"{p.get('baseToken', {}).get('symbol', 'UNK')} (Liquidity: ${p.get('liquidity', {}).get('usd', 0)})" for p in pairs]
-    except Exception as e:
-        targets = [f"Ошибка парсинга DEX: {str(e)}"]
-
-    return {
-        "status": "dry_run_active" if dry_run else "⚠️ LIVE_TRADING_LOCKED (Требуется имплементация подписи транзакций в core/tools.py)",
-        "targets": targets,
-        "message": "Система снайпинга: данные получены с реального рынка (DexScreener)."
-    }
+        return f"CoinGecko API Error: {e}"
 
 async def web_search(query, **kwargs):
-    """Реальный парсинг поисковой выдачи DuckDuckGo (HTML) без API ключей."""
+    """Real web search parsing via DuckDuckGo (HTML) without API keys."""
     try:
         url = f"https://html.duckduckgo.com/html/?q={urllib.parse.quote(query)}"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
@@ -53,15 +28,15 @@ async def web_search(query, **kwargs):
         
         soup = BeautifulSoup(html, 'html.parser')
         results = []
-        for a in soup.find_all('a', class_='result__snippet')[:3]:  # Топ 3 результата
+        for a in soup.find_all('a', class_='result__snippet')[:3]:
             results.append(a.text)
             
-        return "\n\n".join(results) if results else "Поиск не дал результатов."
+        return "\n\n".join(results) if results else "Search returned no results."
     except Exception as e:
-        return f"Ошибка выполнения веб-поиска: {str(e)}"
+        return f"Web search execution error: {str(e)}"
 
 async def system_info(**kwargs):
-    """Реальные данные о системе хоста, на котором запущен агент."""
+    """Real host system data."""
     return {
         "cpu_percent": psutil.cpu_percent(interval=0.5),
         "ram_percent": psutil.virtual_memory().percent,
@@ -69,8 +44,7 @@ async def system_info(**kwargs):
     }
 
 TOOL_REGISTRY = {
-    "crypto_price": crypto_price,
-    "memecoin_sniper": memecoin_sniper,
-    "web_search": web_search,
-    "system_info": system_info
+        "crypto_price": crypto_price,
+        "web_search": web_search,
+        "system_info": system_info
 }

@@ -12,6 +12,3 @@ tools:
     enabled: false
   json_processor:
     enabled: true
-memecoin_sniper:
-  enabled: true
-  dry_run: true
