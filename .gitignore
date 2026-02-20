@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+memory/*.log
+memory/tts_output.wav
+memory/long_term_summaries/
+models/piper/*.onnx
+models/piper/*.json
+logs/
+data/
