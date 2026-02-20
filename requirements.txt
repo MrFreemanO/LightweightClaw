@@ -6,3 +6,4 @@ pyyaml
 psutil
 openai-whisper
 piper-tts
+python-dotenv

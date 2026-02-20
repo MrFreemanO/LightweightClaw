@@ -1,0 +1,17 @@
+tools:
+  web_search:
+    enabled: true
+    timeout: 10
+  crypto_price:
+    enabled: true
+  system_info:
+    enabled: true
+  file_read:
+    enabled: true
+  code_executor:
+    enabled: false
+  json_processor:
+    enabled: true
+memecoin_sniper:
+  enabled: true
+  dry_run: true
