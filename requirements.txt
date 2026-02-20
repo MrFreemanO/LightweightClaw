@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-telegram-bot
+aiohttp
+pyyaml
+psutil
+openai-whisper
+piper-tts

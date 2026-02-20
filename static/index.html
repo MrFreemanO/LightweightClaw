@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>LightweightClaw</title>
+    <style>
+        body { font-family: system-ui; max-width: 900px; margin: 20px auto; background: #f4f4f9; }
+        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .controls { display: flex; gap: 10px; margin-bottom: 20px; }
+        button { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; background: #e0e0e0; font-weight: bold; transition: 0.3s; }
+        button.active { background: #667eea; color: white; }
+        #log { height: 400px; overflow-y: auto; background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd; }
+        .msg { margin-bottom: 10px; padding: 10px; border-radius: 5px; line-height: 1.4; }
+        .msg.user { background: #667eea; color: white; margin-left: 20%; border-bottom-right-radius: 0; }
+        .msg.agent { background: #e0e0e0; color: #333; margin-right: 20%; border-bottom-left-radius: 0; }
+        .input-group { display: flex; gap: 10px; }
+        input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
+        #send { background: #4caf50; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="margin-top:0;">🤖 LightweightClaw</h1>
+        <div class="controls" id="modes">
+            <button data-persona="jarvis">🤖 Jarvis</button>
+            <button data-persona="mira" class="active">✨ Mira</button>
+            <div style="flex:1;"></div>
+            <button data-mode="live" class="active">💬 Live Chat</button>
+            <button data-mode="tts">🔊 TTS (Voice)</button>
+        </div>
+        
+        <div id="log"></div>
+        
+        <div class="input-group">
+            <input type="text" id="input" placeholder="Напишите команду, например 'цена BTC' или 'проверь pump.fun'...">
+            <button id="send">Отправить</button>
+        </div>
+    </div>
+
+    <script>
+        const ws = new WebSocket(`ws://${location.host}/ws`);
+        const log = document.getElementById("log");
+        let activePersona = "mira";
+        let activeMode = "live";
+
+        document.querySelectorAll("#modes button").forEach(btn => {
+            btn.onclick = () => {
+                if (btn.dataset.persona) {
+                    document.querySelectorAll("[data-persona]").forEach(b => b.classList.remove("active"));
+                    activePersona = btn.dataset.persona;
+                }
+                if (btn.dataset.mode) {
+                    document.querySelectorAll("[data-mode]").forEach(b => b.classList.remove("active"));
+                    activeMode = btn.dataset.mode;
+                }
+                btn.classList.add("active");
+            };
+        });
+
+        document.getElementById("send").onclick = () => {
+            const msg = document.getElementById("input").value;
+            if (!msg) return;
+            
+            ws.send(JSON.stringify({ message: msg, persona: activePersona, mode: activeMode }));
+            
+            const div = document.createElement("div");
+            div.className = "msg user";
+            div.textContent = msg;
+            log.appendChild(div);
+            
+            document.getElementById("input").value = "";
+            log.scrollTop = log.scrollHeight;
+        };
+
+        ws.onmessage = e => {
+            const data = JSON.parse(e.data);
+            const div = document.createElement("div");
+            div.className = "msg agent";
+            div.textContent = data.text;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+            
+            // TTS (Голосовой вывод)
+            if(activeMode === "tts" && 'speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(data.text);
+                // Простая эмуляция: если Джарвис - ищем мужской голос, если Мира - женский
+                utterance.lang = 'ru-RU';
+                utterance.pitch = activePersona === 'jarvis' ? 0.5 : 1.5;
+                window.speechSynthesis.speak(utterance);
+            }
+        };
+        
+        document.getElementById("input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("send").click();
+            }
+        });
+    </script>
+</body>
+</html>

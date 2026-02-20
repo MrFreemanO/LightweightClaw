@@ -1,0 +1,12 @@
+llm:
+  primary: jan
+  jan:
+    base_url: "http://127.0.0.1:1337/v1"
+    model: "local-gguf"
+telegram:
+  enabled: true
+web:
+  enabled: true
+  port: 8000
+security:
+  allowed_tools: ["crypto_price", "web_search", "system_info", "memecoin_sniper"]
